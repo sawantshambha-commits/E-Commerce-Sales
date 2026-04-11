@@ -122,3 +122,84 @@ FROM (
     LIMIT 5000
 ) temp;
 
+-- Beginner Level (Basics but important)
+-- 1. Total number of customers
+select count(customer_id) as Total_Customer
+from customers;
+
+-- 2. Total orders
+select count(order_id) as Total_Orders 
+from orders;
+
+-- 3. Total revenue
+select sum(total_price) as Total_Revenue 
+from order_items;
+
+-- 4. List all unique cities
+select distinct(city) from customers;
+
+-- 5. Count orders by status
+select status, count(order_id) as Total
+from orders
+group by status;
+
+-- 6. Average product price
+
+
+-- 7. Total products per category
+
+
+-- 8. Find top 5 highest priced products
+
+
+-- Intermediate Level (Real Work)
+-- 9. Total revenue per customer
+
+
+-- 10. Top 10 customers by revenue
+
+
+-- 11. Most sold products (by quantity)
+
+
+-- 12. Monthly revenue
+
+
+-- 13. Customers with no orders
+
+
+-- 14. Orders with more than 2 items
+
+
+-- 15. Revenue by category
+
+
+-- 16. Payment success rate
+
+
+-- Advanced Level (Interview Killer 🔥)
+-- 17. Rank customers by total spending
+
+
+-- 18. Top product in each category
+
+
+-- 19. Running total of revenue by date
+
+
+-- 20. Customer retention (customers ordering more than once)
+
+
+-- 21. Find repeat vs new customers
+
+
+-- 22. Highest revenue month
+
+
+-- 23. Customer lifetime value (CLV)
+
+
+-- 24. Detect duplicate orders (same customer same date)
+
+
+-- 25. Most popular payment method

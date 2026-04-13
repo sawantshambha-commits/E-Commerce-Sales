@@ -144,20 +144,42 @@ from orders
 group by status;
 
 -- 6. Average product price
-
+select avg(price)
+from products;
 
 -- 7. Total products per category
-
+select category, count(*)
+from products
+group by category
+order by category;
 
 -- 8. Find top 5 highest priced products
-
+select product_name, price 
+from products
+order by price desc
+limit 5;
 
 -- Intermediate Level (Real Work)
 -- 9. Total revenue per customer
 
+select c.customer_id, c.name, sum(oi.total_price) as total_Revenue
+from customers as c 
+inner join orders as o
+on c.customer_id = o.customer_id
+inner join order_items as oi
+on o.order_id = oi.order_id
+inner join products as p
+on oi.product_id = p.product_id
+group by c.customer_id, name;
 
 -- 10. Top 10 customers by revenue
-
+SELECT c.name, SUM(oi.total_price) AS total_spent
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+JOIN order_items oi ON o.order_id = oi.order_id
+GROUP BY c.name
+ORDER BY total_spent DESC
+LIMIT 10;
 
 -- 11. Most sold products (by quantity)
 

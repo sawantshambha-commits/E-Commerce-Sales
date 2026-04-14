@@ -182,13 +182,29 @@ ORDER BY total_spent DESC
 LIMIT 10;
 
 -- 11. Most sold products (by quantity)
-
+select p.product_name, sum(oi.quantity) as Total_Qty
+from order_items as oi
+inner join products as p
+on oi.product_id = p.product_id
+group by product_name
+order by Total_Qty desc
+limit 1;
 
 -- 12. Monthly revenue
-
+select month(order_date), sum(total_price) as Total_Revenue
+from order_items as oi
+inner join orders as o
+on oi.order_id = o.order_id
+group by order_date
+order by order_date
+limit 1;
 
 -- 13. Customers with no orders
-
+select c.name, o.order_id
+from customers as c
+inner join orders as o
+on c.customer_id = o.customer_id
+where order_id is Null;
 
 -- 14. Orders with more than 2 items
 

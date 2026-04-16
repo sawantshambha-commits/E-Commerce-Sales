@@ -207,17 +207,29 @@ on c.customer_id = o.customer_id
 where order_id is Null;
 
 -- 14. Orders with more than 2 items
-
+select * from order_items
+where quantity > 2;
 
 -- 15. Revenue by category
-
+select p.category, sum(oi.total_price) as Total_Revenue
+from products as p
+inner join order_items as oi
+on p.product_id = oi.product_id
+group by category;
 
 -- 16. Payment success rate
-
-
+select 
+(count(case
+when 
+payment_status = "Success" then 1 end)) * 100 / count(*) 
+from payments;
 -- Advanced Level (Interview Killer 🔥)
 -- 17. Rank customers by total spending
-
+select * from customers; -- customer_id, name, city, signup_date
+select * from order_items; -- order_item-id, order_id, product_id, uantity, total_price
+select * from orders; -- order-id, customer_id, order_date, status
+select * from payments; -- payment_id, order_id, payment_method, payment_status
+select * from products; -- prodcut_id, product_name, category, price 
 
 -- 18. Top product in each category
 

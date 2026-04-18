@@ -225,6 +225,17 @@ payment_status = "Success" then 1 end)) * 100 / count(*)
 from payments;
 -- Advanced Level (Interview Killer 🔥)
 -- 17. Rank customers by total spending
+-- Advanced Level (Interview Killer 🔥)
+-- 17. Rank customers by total spending
+SELECT 
+    c.customer_id,
+    c.name,
+    SUM(oi.total_price) AS total_spent,
+    RANK() OVER (ORDER BY SUM(oi.total_price) DESC) AS rank_no
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+JOIN order_items oi ON o.order_id = oi.order_id
+GROUP BY c.customer_id, c.name;
 select * from customers; -- customer_id, name, city, signup_date
 select * from order_items; -- order_item-id, order_id, product_id, uantity, total_price
 select * from orders; -- order-id, customer_id, order_date, status
@@ -232,16 +243,48 @@ select * from payments; -- payment_id, order_id, payment_method, payment_status
 select * from products; -- prodcut_id, product_name, category, price 
 
 -- 18. Top product in each category
-
+SELECT *
+FROM (
+    SELECT 
+        p.category,
+        p.product_name,
+        SUM(oi.quantity) AS total_qty,
+        RANK() OVER (PARTITION BY p.category ORDER BY SUM(oi.quantity) DESC) AS rnk
+    FROM order_items oi
+    JOIN products p ON oi.product_id = p.product_id
+    GROUP BY p.category, p.product_name
+) t
+WHERE rnk = 1;
 
 -- 19. Running total of revenue by date
+SELECT 
+    o.order_date,
+    SUM(oi.total_price) AS daily_revenue,
+    SUM(SUM(oi.total_price)) OVER (ORDER BY o.order_date) AS running_total
+FROM orders o
+JOIN order_items oi ON o.order_id = oi.order_id
+GROUP BY o.order_date;
 
 
 -- 20. Customer retention (customers ordering more than once)
-
+select customer_id, count(order_id) as Total_Order 
+from orders
+group by customer_id
+having Total_Order > 1;
 
 -- 21. Find repeat vs new customers
-
+SELECT 
+    CASE 
+        WHEN order_count = 1 THEN 'New'
+        ELSE 'Repeat'
+    END AS customer_type,
+    COUNT(*) 
+FROM (
+    SELECT customer_id, COUNT(*) AS order_count
+    FROM orders
+    GROUP BY customer_id
+) t
+GROUP BY customer_type;
 
 -- 22. Highest revenue month
 

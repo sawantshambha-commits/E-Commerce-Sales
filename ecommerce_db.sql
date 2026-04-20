@@ -287,12 +287,33 @@ FROM (
 GROUP BY customer_type;
 
 -- 22. Highest revenue month
-
+SELECT MONTH(o.order_date) AS month, SUM(oi.total_price) AS revenue
+FROM orders o
+JOIN order_items oi ON o.order_id = oi.order_id
+GROUP BY month
+ORDER BY revenue DESC
+LIMIT 1;
 
 -- 23. Customer lifetime value (CLV)
-
+SELECT 
+    c.customer_id,
+    c.name,
+    SUM(oi.total_price) AS lifetime_value
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+JOIN order_items oi ON o.order_id = oi.order_id
+GROUP BY c.customer_id, c.name
+ORDER BY lifetime_value DESC;
 
 -- 24. Detect duplicate orders (same customer same date)
-
+select customer_id, order_date, count(*)
+from orders
+group by customer_id, order_date
+having count(*) > 1;
 
 -- 25. Most popular payment method
+select payment_method, count(*) as total_usage
+from payments
+group by payment_method 
+order by payment_method desc
+limit 1;
